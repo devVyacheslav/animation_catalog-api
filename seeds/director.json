@@ -1,0 +1,42 @@
+[
+  {
+    "name": {
+      "first": "Ян",
+      "last": "Шванкмайер"
+    },
+    "originalName": {
+      "first": "Jan",
+      "last": "Svankmajer"
+    }
+  },
+  {
+    "name": {
+      "first": "Тим",
+      "last": "Бёртон"
+    },
+    "originalName": {
+      "first": "Tim",
+      "last": "Burton"
+    }
+  },
+  {
+    "name": {
+      "first": "Билл",
+      "last": "Плимптон"
+    },
+    "originalName": {
+      "first": "Bill",
+      "last": "Plympton"
+    }
+  },
+  {
+    "name": {
+      "first": "Генри",
+      "last": "Селик"
+    },
+    "originalName": {
+      "first": "Henry",
+      "last": "Selick"
+    }
+  }
+]

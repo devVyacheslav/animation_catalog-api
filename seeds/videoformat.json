@@ -1,0 +1,38 @@
+[
+  {
+    "name": "SD",
+    "ratio": "4:3",
+    "resolution": "720x576",
+    "format": "576"
+  },
+  {
+    "name": "SD",
+    "ratio": "4:3",
+    "resolution": "640x480",
+    "format": "480"
+  },
+  {
+    "name": "HD",
+    "ratio": "16:9",
+    "resolution": "1280x720",
+    "format": "720"
+  },
+  {
+    "name": "Full HD",
+    "ratio": "16:9",
+    "resolution": "1920x1080",
+    "format": "1080"
+  },
+  {
+    "name": "4K UHD",
+    "ratio": "16:9",
+    "resolution": "3840x2160",
+    "format": "2160"
+  },
+  {
+    "name": "8K UHD",
+    "ratio": "16:9",
+    "resolution": "7680x4320",
+    "format": "4320"
+  }
+]
