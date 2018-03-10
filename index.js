@@ -46,6 +46,8 @@ app.use(
   })
 )
 
+app.use(express.static('./public'))
+
 // app.use(cookieParser())
 //
 // const MongoStore = require('connect-mongo')(session)

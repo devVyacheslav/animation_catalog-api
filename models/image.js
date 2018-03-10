@@ -1,11 +1,42 @@
 const db = require('../db')
 const Schema = db.Schema
 
-const ImageShema = new Schema({
-  fileName: {
-    type: String,
-    required: true
-  }
-}, { collection: 'image'})
+const ImageShema = new Schema(
+  {
+    fieldname: {
+      type: String,
+      required: true
+    },
+    originalname: {
+      type: String,
+      required: true
+    },
+    encoding: {
+      type: String,
+      required: true
+    },
+    mimetype: {
+      type: String,
+      required: true
+    },
+    destination: {
+      type: String,
+      required: true
+    },
+    filename: {
+      type: String,
+      required: true
+    },
+    path: {
+      type: String,
+      required: true
+    },
+    size: {
+      type: Number,
+      required: true
+    }
+  },
+  { collection: 'image' }
+)
 
 exports.Image = db.model('Image', ImageShema)
