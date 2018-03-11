@@ -15,5 +15,14 @@ function create (req, res, next) {
   })
 }
 
+function remove (req, res, next) {
+  const _id = req.params.id
+  Country.findOneAndRemove({ _id }).exec((err, country) => {
+    if (err) return next(err)
+    return res.send(country._id)
+  })
+}
+
 exports.list = list
 exports.create = create
+exports.remove = remove
