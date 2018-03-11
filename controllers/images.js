@@ -17,11 +17,17 @@ const upload = multer({ storage: storage }).single('cover')
 function create (req, res, next) {
   return new Promise((resolve, reject) => {
     upload(req, res, err => {
-      const newImage = new Image(req.file)
-      newImage.save((err, image) => {
-        if (err) reject(err)
-        resolve(image)
-      })
+      if (err) return next(err)
+
+      if (req.file) {
+        const newImage = new Image(req.file)
+        newImage.save((err, image) => {
+          if (err) next(err)
+          resolve(image)
+        })
+      } else {
+        resolve(null)
+      }
     })
   })
 }

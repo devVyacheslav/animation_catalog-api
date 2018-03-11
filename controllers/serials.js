@@ -19,10 +19,12 @@ function show (req, res, next) {
 
 function update (req, res, next) {
   const serialId = req.params.id
+  const reqUp = req
   Images.create(req, res, next).then(
     response => {
-      const imgId = response._id
       const parsedBodyData = JSON.parse(req.body.data)
+      const imgId = response ? response._id : parsedBodyData.cover
+
       const data = Object.assign(parsedBodyData, { cover: imgId })
       Serial.findOneAndUpdate({ _id: serialId }, { $set: data }, { new: true })
         .populate('countries directors studios cover')
