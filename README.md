@@ -1,3 +1,6 @@
+# install 
+$ yarn
+
 # launch server
 $ yarn start
 
