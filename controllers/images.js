@@ -1,6 +1,7 @@
 const Image = require('../models/image').Image
 const path = require('path')
 const multer = require('multer')
+const fs = require('fs')
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -32,4 +33,18 @@ function create (req, res, next) {
   })
 }
 
+function remove (req, res, next) {
+  const _id = req.params.id
+
+  Image.findOneAndRemove({ _id }).exec((err, image) => {
+    if (err) return next(err)
+
+    fs.unlink(image.path, err => {
+      if (err) return next(err)
+      res.send(image)
+    })
+  })
+}
+
 exports.create = create
+exports.remove = remove
