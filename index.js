@@ -10,8 +10,7 @@ const bodyParser = require('body-parser')
 const db = require('./db')
 
 const PORT = process.env.PORT || 3000
-const HOST = 'lit-tundra-86662.herokuapp.com'
-const API = HOST + '/api/v1/'
+const API = '/api/v1/'
 const NODE_ENV = process.env.NODE_ENV || 'development'
 
 // const errorhandler = require('errorhandler')
