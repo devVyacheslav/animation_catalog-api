@@ -68,7 +68,7 @@ app.use(sendHttpError)
 const API = config.get('api')
 
 // Init routes
-app.use(API, index)
+app.use('/', index)
 app.use(`${API}countries`, countries)
 app.use(`${API}directors`, directors)
 app.use(`${API}languages`, languages)
