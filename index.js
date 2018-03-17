@@ -4,17 +4,14 @@ require('dotenv').config()
 
 const http = require('http')
 const bodyParser = require('body-parser')
-// const session = require('express-session')
-// const cookieParser = require('cookie-parser')
-// const checkAuth = require('./middleware/checkAuth')
 const db = require('./db')
 
 const PORT = process.env.PORT || 3000
 const API = '/api/v1/'
 const NODE_ENV = process.env.NODE_ENV || 'development'
 
-// const errorhandler = require('errorhandler')
-// const HttpError = require('./error').HttpError
+const errorhandler = require('errorhandler')
+const HttpError = require('./error').HttpError
 
 const app = express()
 
@@ -53,22 +50,8 @@ app.use(
 
 app.use('/public', express.static('public'))
 
-// app.use(cookieParser())
-//
-// const MongoStore = require('connect-mongo')(session)
-// app.use(session({
-//   secret: config.get('session:secret'),
-//   key: config.get('session:key'),
-//   cookie: config.get('session:cookie'),
-//   resave: true,
-//   saveUninitialized: true,
-//   store: new MongoStore({ mongooseConnection: db.connection })
-// }))
-//
 const sendHttpError = require('./middleware/sendHttpError')
 app.use(sendHttpError)
-// app.use(require('./middleware/loadUser'))
-//
 
 // Init routes
 app.use('/', index)
@@ -85,23 +68,31 @@ app.use(`${API}dvds`, dvds)
 app.use(`${API}films`, films)
 app.use(`${API}images`, images)
 
-// app.use((err, req, res, next) => {
-//   if (typeof err === 'number') {
-//     err = new HttpError(err)
-//   }
+app.use((err, req, res, next) => {
+  if (res.headersSent) {
+    return next(err)
+  }
+  res.status(500)
+  res.render('error', { error: err })
+})
 
-//   if (err instanceof HttpError) {
-//     res.sendHttpError(err)
-//   } else {
-//     if (NODE_ENV === 'development') {
-//       errorhandler()(err, req, res, next)
-//     } else {
-//       console.error(err)
-//       err = new HttpError(500)
-//       res.sendHttpError(err)
-//     }
-//   }
-// })
+app.use((err, req, res, next) => {
+  if (typeof err === 'number') {
+    err = new HttpError(err)
+  }
+
+  if (err instanceof HttpError) {
+    res.sendHttpError(err)
+  } else {
+    if (NODE_ENV === 'development') {
+      errorhandler()(err, req, res, next)
+    } else {
+      console.error(err)
+      err = new HttpError(500)
+      res.sendHttpError(err)
+    }
+  }
+})
 
 const server = http.createServer(app)
 server.listen(PORT, () => {
