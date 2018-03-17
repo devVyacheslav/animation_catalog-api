@@ -46,7 +46,10 @@ function create (req, res, next) {
     const newSerial = new Serial(data)
     newSerial.save((err, serial) => {
       if (err) return next(err)
-      return res.send(serial)
+      Serial.populate(serial, { path: 'cover' }, (err, doc) => {
+        if (err) return next(err)
+        return res.send(doc)
+      })
     })
   })
 }
