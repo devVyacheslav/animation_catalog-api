@@ -51,7 +51,18 @@ function create (req, res, next) {
   })
 }
 
+function remove (req, res, next) {
+  const _id = req.params.id
+  Serial.findOneAndRemove({ _id }).exec((err, serial) => {
+    if (err) return next(err)
+    const coverId = serial.cover._id || serial.cover
+    if (coverId) Images.unlinkImage(coverId, res, next)
+    return res.send(serial)
+  })
+}
+
 exports.list = list
 exports.show = show
 exports.update = update
 exports.create = create
+exports.remove = remove
