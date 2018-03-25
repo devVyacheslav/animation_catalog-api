@@ -2,10 +2,12 @@ const Serial = require('../models/serial').Serial
 const Images = require('../controllers/images')
 
 function list (req, res, next) {
-  Serial.find().populate('cover').exec((err, serials) => {
-    if (err) return next(err)
-    res.json(serials)
-  })
+  Serial.find()
+    .populate('countries directors studios cover')
+    .exec((err, serials) => {
+      if (err) return next(err)
+      res.json(serials)
+    })
 }
 
 function show (req, res, next) {
@@ -17,12 +19,34 @@ function show (req, res, next) {
     })
 }
 
+function create (req, res, next) {
+  Images.create(req, res, next).then(response => {
+    const parsedBodyData = JSON.parse(req.body.data)
+    const imgId = response ? response._id : parsedBodyData.cover || null
+    const data = Object.assign(parsedBodyData, { cover: imgId })
+
+    const newSerial = new Serial(data)
+
+    newSerial.save((err, serial) => {
+      if (err) return next(err)
+      Serial.populate(
+        serial,
+        { path: 'countries directors studios cover' },
+        (err, doc) => {
+          if (err) return next(err)
+          return res.send(doc)
+        }
+      )
+    })
+  })
+}
+
 function update (req, res, next) {
   const serialId = req.params.id
   Images.create(req, res, next).then(
     response => {
       const parsedBodyData = JSON.parse(req.body.data)
-      const imgId = response ? response._id : parsedBodyData.cover
+      const imgId = response ? response._id : parsedBodyData.cover || null
 
       const data = Object.assign(parsedBodyData, { cover: imgId })
       Serial.findOneAndUpdate({ _id: serialId }, { $set: data }, { new: true })
@@ -38,28 +62,16 @@ function update (req, res, next) {
   )
 }
 
-function create (req, res, next) {
-  Images.create(req, res, next).then(response => {
-    const parsedBodyData = JSON.parse(req.body.data)
-    const imgId = response ? response._id : parsedBodyData.cover
-    const data = Object.assign(parsedBodyData, { cover: imgId })
-    const newSerial = new Serial(data)
-    newSerial.save((err, serial) => {
-      if (err) return next(err)
-      Serial.populate(serial, { path: 'cover' }, (err, doc) => {
-        if (err) return next(err)
-        return res.send(doc)
-      })
-    })
-  })
-}
-
 function remove (req, res, next) {
   const _id = req.params.id
   Serial.findOneAndRemove({ _id }).exec((err, serial) => {
     if (err) return next(err)
-    const coverId = serial.cover._id || serial.cover
-    if (coverId) Images.unlinkImage(coverId, res, next)
+    if (serial.cover) {
+      const coverId = typeof serial.cover === 'string'
+        ? serial.cover
+        : serial.cover._id
+      Images.unlinkImage(coverId, res, next)
+    }
     return res.send(serial)
   })
 }
