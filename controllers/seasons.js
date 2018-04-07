@@ -17,6 +17,15 @@ function list (req, res, next) {
     })
 }
 
+function show (req, res, next) {
+  Season.findOne({ _id: req.params.id })
+    .populate('cover serial')
+    .exec((err, season) => {
+      if (err) return next(err)
+      res.json(season)
+    })
+}
+
 function create (req, res, next) {
   Images.create(req, res).then(response => {
     const parsedBodyData = JSON.parse(req.body.data)
@@ -68,3 +77,4 @@ exports.list = list
 exports.create = create
 exports.update = update
 exports.remove = remove
+exports.show = show
