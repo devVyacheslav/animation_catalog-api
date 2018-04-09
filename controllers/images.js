@@ -17,7 +17,7 @@ const upload = multer({ storage: storage }).single('cover')
 
 function create (req, res) {
   return new Promise((resolve, reject) => {
-    upload(req, res, err => {
+    upload((req, res, err) => {
       if (err) reject(err)
 
       if (req.file) {
