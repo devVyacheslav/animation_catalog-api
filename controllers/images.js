@@ -15,10 +15,10 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage }).single('cover')
 
-function create (req, res) {
+function create (req, res, next) {
   return new Promise((resolve, reject) => {
-    upload((req, res, err) => {
-      if (err) reject(err)
+    upload(req, res, err => {
+      if (err) return next(err)
 
       if (req.file) {
         const newImage = new Image(req.file)
@@ -39,7 +39,8 @@ function unlinkImage (_id, res, next) {
 
     fs.unlink(image.path, err => {
       if (err) return next(err)
-      return res.send(image)
+      res.send(image)
+      return image
     })
   })
 }
