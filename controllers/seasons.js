@@ -1,15 +1,9 @@
 const Season = require('../models/season').Season
 const Images = require('../controllers/images')
 
-function list (req, res, next) {
+function list(req, res, next) {
   const { serialId } = req.params
-  return Season.find(
-    {
-      serial: serialId
-    },
-    [],
-    { sort: { number: 1 } }
-  )
+  return Season.find({ serial: serialId }, [], { sort: { number: 1 } })
     .populate('cover')
     .exec((err, seasons) => {
       if (err) return next(err)
@@ -17,7 +11,7 @@ function list (req, res, next) {
     })
 }
 
-function show (req, res, next) {
+function show(req, res, next) {
   Season.findOne({ _id: req.params.id })
     .populate('cover serial')
     .exec((err, season) => {
@@ -26,7 +20,7 @@ function show (req, res, next) {
     })
 }
 
-function create (req, res, next) {
+function create(req, res, next) {
   Images.create(req, res).then(response => {
     const parsedBodyData = JSON.parse(req.body.data)
     const imgId = response ? response._id : parsedBodyData.cover || null
@@ -43,7 +37,7 @@ function create (req, res, next) {
   })
 }
 
-function update (req, res, next) {
+function update(req, res, next) {
   const seasonId = req.params.id
 
   Images.create(req, res, next).then(response => {
@@ -59,14 +53,12 @@ function update (req, res, next) {
   })
 }
 
-function remove (req, res, next) {
+function remove(req, res, next) {
   const _id = req.params.id
   Season.findOneAndRemove({ _id }).exec((err, season) => {
     if (err) return next(err)
     if (season.cover) {
-      const coverId = typeof season.cover === 'string'
-        ? season.cover
-        : season.cover._id
+      const coverId = typeof season.cover === 'string' ? season.cover : season.cover._id
       Images.unlinkImage(coverId, res, next)
     }
     return res.send(season)

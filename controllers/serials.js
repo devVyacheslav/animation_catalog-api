@@ -1,7 +1,7 @@
 const Serial = require('../models/serial').Serial
 const Images = require('../controllers/images')
 
-function list (req, res, next) {
+function list(req, res, next) {
   Serial.find()
     .populate('countries directors studios cover')
     .exec((err, serials) => {
@@ -10,7 +10,7 @@ function list (req, res, next) {
     })
 }
 
-function show (req, res, next) {
+function show(req, res, next) {
   Serial.findOne({ _id: req.params.id })
     .populate('countries directors studios cover')
     .exec((err, serial) => {
@@ -19,7 +19,7 @@ function show (req, res, next) {
     })
 }
 
-function create (req, res, next) {
+function create(req, res, next) {
   Images.create(req, res, next).then(response => {
     const parsedBodyData = JSON.parse(req.body.data)
     const imgId = response ? response._id : parsedBodyData.cover || null
@@ -29,19 +29,15 @@ function create (req, res, next) {
 
     newSerial.save((err, serial) => {
       if (err) return next(err)
-      Serial.populate(
-        serial,
-        { path: 'countries directors studios cover' },
-        (err, doc) => {
-          if (err) return next(err)
-          return res.send(doc)
-        }
-      )
+      Serial.populate(serial, { path: 'countries directors studios cover' }, (err, doc) => {
+        if (err) return next(err)
+        return res.send(doc)
+      })
     })
   })
 }
 
-function update (req, res, next) {
+function update(req, res, next) {
   const serialId = req.params.id
   Images.create(req, res, next).then(
     response => {
@@ -62,14 +58,12 @@ function update (req, res, next) {
   )
 }
 
-function remove (req, res, next) {
+function remove(req, res, next) {
   const _id = req.params.id
   Serial.findOneAndRemove({ _id }).exec((err, serial) => {
     if (err) return next(err)
     if (serial.cover) {
-      const coverId = typeof serial.cover === 'string'
-        ? serial.cover
-        : serial.cover._id
+      const coverId = typeof serial.cover === 'string' ? serial.cover : serial.cover._id
       Images.unlinkImage(coverId, res, next)
     }
     return res.send(serial)
