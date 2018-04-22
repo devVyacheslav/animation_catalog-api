@@ -27,15 +27,12 @@ const serials = require('./routes/serials')
 const seasons = require('./routes/seasons')
 const episodes = require('./routes/episodes')
 const dvds = require('./routes/dvds')
-// const films = require('./routes/films')
+const films = require('./routes/films')
 const images = require('./routes/images')
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader(
-    'Access-Control-Allow-Methods',
-    'GET, POST, OPTIONS, PUT, PATCH, DELETE'
-  )
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE')
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type')
   res.setHeader('Access-Control-Allow-Credentials', true)
   next()
@@ -65,7 +62,7 @@ app.use(`${API}serials`, serials)
 app.use(`${API}seasons`, seasons)
 app.use(`${API}episodes`, episodes)
 app.use(`${API}dvds`, dvds)
-// app.use(`${API}films`, films)
+app.use(`${API}films`, films)
 app.use(`${API}images`, images)
 
 app.use((err, req, res, next) => {
