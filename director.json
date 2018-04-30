@@ -1,0 +1,4 @@
+{"_id":{"$oid":"5adcbe4f75fdd06488ac70e1"},"name":{"first":"Ян","last":"Шванкмайер"},"originalName":{"first":"Jan","last":"Svankmajer"}}
+{"_id":{"$oid":"5adcbe4f75fdd06488ac70e2"},"name":{"first":"Тим","last":"Бёртон"},"originalName":{"first":"Tim","last":"Burton"}}
+{"_id":{"$oid":"5adcbe4f75fdd06488ac70e3"},"name":{"first":"Билл","last":"Плимптон"},"originalName":{"first":"Bill","last":"Plympton"}}
+{"_id":{"$oid":"5adcbe4f75fdd06488ac70e4"},"name":{"first":"Генри","last":"Селик"},"originalName":{"first":"Henry","last":"Selick"}}

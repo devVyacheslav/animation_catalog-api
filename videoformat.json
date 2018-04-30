@@ -1,0 +1,6 @@
+{"_id":{"$oid":"5adcbe5075fdd06488ac70f7"},"name":"SD","ratio":"4:3","resolution":"720x576","format":"576"}
+{"_id":{"$oid":"5adcbe5075fdd06488ac70f8"},"name":"SD","ratio":"4:3","resolution":"640x480","format":"480"}
+{"_id":{"$oid":"5adcbe5075fdd06488ac70f9"},"name":"HD","ratio":"16:9","resolution":"1280x720","format":"720"}
+{"_id":{"$oid":"5adcbe5075fdd06488ac70fa"},"name":"Full HD","ratio":"16:9","resolution":"1920x1080","format":"1080"}
+{"_id":{"$oid":"5adcbe5075fdd06488ac70fb"},"name":"4K UHD","ratio":"16:9","resolution":"3840x2160","format":"2160"}
+{"_id":{"$oid":"5adcbe5075fdd06488ac70fc"},"name":"8K UHD","ratio":"16:9","resolution":"7680x4320","format":"4320"}

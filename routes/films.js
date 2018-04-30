@@ -8,5 +8,6 @@ router.get('/:id', Films.show)
 router.post('/new', Films.create)
 router.put('/:id', Films.update)
 router.delete('/:id', Films.remove)
+router.put('/:id/mark', Films.changeMark)
 
 module.exports = router

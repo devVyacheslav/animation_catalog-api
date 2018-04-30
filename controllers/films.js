@@ -5,13 +5,27 @@ const Images = require('../controllers/images')
 const populateStr =
   'cover subtitles langOriginal translations videoformat directors countries studios'
 
-function list(req, res, next) {
+async function list(req, res, next) {
   // отфильтровываем эпизоды сериалов
-  return Film.find({ $and: [{ serial: { $exists: false } }] })
+  const countOfFilms = await Film.find().count()
+
+  console.log('countOfFilms', countOfFilms)
+
+  let skip = req.query && req.query.skip ? req.query.skip : 0
+  let limit = req.query && req.query.limit ? req.query.limit : 50
+
+  console.log('skip', skip)
+  console.log('limit', limit)
+
+  return Film.find({ $and: [{ serial: { $exists: false } }] }, [], {
+    skip: Number(skip),
+    limit: Number(limit),
+    sort: { createdAt: -1 }
+  })
     .populate(populateStr)
     .exec((err, films) => {
       if (err) return next(err)
-      res.json(films)
+      res.json({ list: films, count: countOfFilms })
     })
 }
 
@@ -43,15 +57,16 @@ function create(req, res, next) {
 
 function update(req, res, next) {
   const filmId = req.params.id
+  const updatedAt = Date.now()
 
   Images.create(req, res, next).then(
     response => {
       const parsedBodyData = JSON.parse(req.body.data)
       const imgId = response ? response._id : parsedBodyData.cover || null
 
-      const data = Object.assign(parsedBodyData, { cover: imgId })
+      const data = Object.assign(parsedBodyData, { cover: imgId, updatedAt })
       Film.findOneAndUpdate({ _id: filmId }, { $set: data }, { new: true })
-        .populate('cover')
+        .populate(populateStr)
         .exec((err, doc) => {
           if (err) return next(err)
           res.json(doc)
@@ -75,8 +90,22 @@ function remove(req, res, next) {
   })
 }
 
+function changeMark(req, res, next) {
+  const filmId = req.params.id
+  // selected, liked, viewed
+
+  Film.findOneAndUpdate({ _id: filmId }, { $set: { marks: req.body } }, { new: true }).exec(
+    (err, film) => {
+      if (err) return next(err)
+      const { _id, marks } = film
+      res.json({ _id, marks })
+    }
+  )
+}
+
 exports.list = list
 exports.show = show
 exports.create = create
 exports.update = update
 exports.remove = remove
+exports.changeMark = changeMark

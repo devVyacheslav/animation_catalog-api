@@ -33,11 +33,11 @@ const EpisodeShema = new Schema(
       type: Number,
       min: 0
     },
-    // marks: {
-    //   selected: { type: Boolean, default: false },
-    //   liked: { type: Boolean, default: false },
-    //   viewed: { type: Boolean, default: false }
-    // },
+    marks: {
+      selected: { type: Boolean, default: false },
+      liked: { type: Boolean, default: false },
+      viewed: { type: Boolean, default: false }
+    },
     cover: {
       type: Schema.ObjectId,
       ref: 'Image',
@@ -63,6 +63,14 @@ const EpisodeShema = new Schema(
       type: Schema.ObjectId,
       ref: 'Videoformat',
       required: true
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now
+    },
+    updatedAt: {
+      type: Date,
+      default: null
     }
   },
   { collection: 'episode' }
