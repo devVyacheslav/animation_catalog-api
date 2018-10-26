@@ -20,6 +20,6 @@
     "dev": "supervisor index.js"
   },
   "engines": {
-    "node": "9.4.0"
+    "node": "10.5.0"
   }
 }
