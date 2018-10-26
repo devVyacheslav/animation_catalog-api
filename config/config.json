@@ -3,7 +3,7 @@
   "host": "127.0.0.1",
   "api": "/api/v1/",
   "mongoose": {
-    "uri": "mongodb://localhost/animation-catalog",
+    "uri": "ds143293.mlab.com:43293/animation-catalog",
     "options": {
       "server": {
         "soketOptions": {
